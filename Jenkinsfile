@@ -1,45 +1,10 @@
 pipeline {
-         agent any
-         stages {
-                 stage('One') {
-                 steps {
-                     echo 'Hi, this is Zulaikha from edureka'
-                 }
-                 }
-                 stage('Two') {
-                 steps {
-                    input('Do you want to proceed?')
-                 }
-                 }
-                 stage('Three') {
-                 when {
-                       not {
-                            branch "master"
-                       }
-                 }
-                 steps {
-                       echo "Hello"
-                 }
-                 }
-                 stage('Four') {
-                 parallel { 
-                            stage('Unit Test') {
-                           steps {
-                                echo "Running the unit test..."
-                           }
-                           }
-                            stage('Integration test') {
-                              agent {
-                                    docker {
-                                            reuseNode true
-                                            image 'ubuntu'
-                                           }
-                                    }
-                              steps {
-                                echo "Running the integration test..."
-                              }
-                           }
-                           }
-                           }
-              }
+    agent { docker { image 'maven:3.9.12-eclipse-temurin-21-alpine' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+    }
 }
